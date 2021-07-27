@@ -110,15 +110,30 @@ def api_add() -> str:
     resp = Response(status=201, mimetype='application/json')
     return resp
 
-@app.route('/api/v1/cities/<int:city_id>', methods=['PUT'])
-def api_edit(city_id) -> str:
-    resp = Response(status=201, mimetype='application/json')
+
+@app.route('/api/v1/team/<int:team_id>', methods=['PUT'])
+def api_edit(team_id):
+    content = request.json
+
+    cursor = mysql.get_db().cursor()
+    inputData = (content['Team'], content['Payroll_millions'], content['Wins'], team_id)
+    sql_update_query = """UPDATE mlbteams.mlbteams2012 SET Team = %s, Payroll_millions = %s, Wins = %s WHERE id = %s """
+    cursor.execute(sql_update_query, inputData)
+    mysql.get_db().commit()
+
+    resp = Response(status=200, mimetype='application/json')
     return resp
 
 
-@app.route('/api/cities/<int:city_id>', methods=['DELETE'])
-def api_delete(city_id) -> str:
-    resp = Response(status=210, mimetype='application/json')
+@app.route('/api/v1/team/<int:team_id>', methods=['DELETE'])
+def api_delete(team_id) -> str:
+    content = request.json
+
+    cursor = mysql.get_db().cursor()
+    sql_delete_query = """DELETE FROM mlbteams.mlbteams2012 WHERE id = %s """
+    cursor.execute(sql_delete_query, team_id)
+    mysql.get_db().commit()
+    resp = Response(status=200, mimetype='application/json')
     return resp
 
 
