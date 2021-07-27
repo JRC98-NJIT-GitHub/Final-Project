@@ -4,6 +4,8 @@ from flask import Flask, request, Response, redirect
 from flask import render_template
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 mysql = MySQL(cursorclass=DictCursor)
@@ -75,31 +77,38 @@ def form_delete_post(team_id):
     return redirect("/", code=302)
 
 
-@app.route('/api/v1/cities', methods=['GET'])
+@app.route('/api/v1/team', methods=['GET'])
 def api_browse() -> str:
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM tblCitiesImport')
+    cursor.execute('SELECT * FROM mlbteams.mlbteams2012')
     result = cursor.fetchall()
     json_result = json.dumps(result);
     resp = Response(json_result, status=200, mimetype='application/json')
     return resp
 
 
-@app.route('/api/v1/cities/<int:city_id>', methods=['GET'])
-def api_retrieve(city_id) -> str:
+@app.route('/api/v1/team/<int:team_id>', methods=['GET'])
+def api_retrieve(team_id) -> str:
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM tblCitiesImport WHERE id=%s', city_id)
+    cursor.execute('SELECT * FROM mlbteams.mlbteams2012 WHERE id=%s', team_id)
     result = cursor.fetchall()
     json_result = json.dumps(result);
     resp = Response(json_result, status=200, mimetype='application/json')
     return resp
 
 
-@app.route('/api/v1/cities/', methods=['POST'])
+@app.route('/api/v1/team/new', methods=['POST'])
 def api_add() -> str:
+    content = request.json
+    #app.logger.info('content')
+    #app.logger.info(content)
+    cursor = mysql.get_db().cursor()
+    inputData = (content['Team'], content['Payroll_millions'], content['Wins'])
+    sql_insert_query = """INSERT INTO mlbteams.mlbteams2012 (Team,Payroll_millions,Wins) VALUES (%s, %s, %s) """
+    cursor.execute(sql_insert_query, inputData)
+    mysql.get_db().commit()
     resp = Response(status=201, mimetype='application/json')
     return resp
-
 
 @app.route('/api/v1/cities/<int:city_id>', methods=['PUT'])
 def api_edit(city_id) -> str:
