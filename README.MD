@@ -1,6 +1,6 @@
 # Project Description 
 <b>Updated 7/26/21</b>
-This project was updated to include the MLB Team API http://localhost:5000/api/v1/team.  This includes GET, PUT, PUSH, and DELETE requests.  
+This project was updated to include the MLB Team API http://localhost:5000/api/v1/team.  This includes GET, PUT, PUSH, and DELETE requests on MLBAPI branch.  
 
 Please refer to <a href="https://github.com/jrc98-njit/Homework5/blob/master/JRC98 IS601 Project3 073021.docx">Project 3 Word Doc</a>
  
