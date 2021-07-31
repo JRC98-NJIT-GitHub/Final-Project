@@ -2,7 +2,7 @@ version: "2"
 services:
   app:
     build: ./app
-    container_name: "HW5App"
+    container_name: "FinalProject"
     links:
       - db
     depends_on:
@@ -12,7 +12,7 @@ services:
 
   db:
     image: mysql:5.7
-    container_name: "HW5DB"
+    container_name: "FinalProjectDB"
     ports:
       - "32000:3306"
     environment:
