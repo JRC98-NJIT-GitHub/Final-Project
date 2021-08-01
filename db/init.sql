@@ -43,3 +43,13 @@ INSERT INTO mlbteams2012
     ('Astros',        60.65, 55);
 
 
+CREATE TABLE IF NOT EXISTS `flasklogin-users` (
+    `id` int AUTO_INCREMENT,
+    `name` VARCHAR(100) CHARACTER SET utf8,
+    `email` VARCHAR(40) CHARACTER SET utf8,
+    `password` VARCHAR(200) CHARACTER SET utf8,
+    `website` VARCHAR(60) CHARACTER SET utf8,
+    `created_on` DATETIME,
+    `last_login` DATETIME,
+    PRIMARY KEY (`id`)
+);

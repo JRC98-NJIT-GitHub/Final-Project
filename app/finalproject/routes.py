@@ -1,8 +1,11 @@
 from flask import current_app as app
 import simplejson as json
-from flask import request, Response, redirect
+from flask import request, Response, redirect, url_for
 from flask import render_template
+from flask_login import current_user, login_required, logout_user
 from . import *
+
+app.login_manager = login_manager
 
 @app.route('/', methods=['GET'])
 def index():
@@ -13,9 +16,8 @@ def index():
     return render_template('index.html', title='Home', user=user, teams=result)
 
 
-
-
 @app.route('/edit/<int:team_id>', methods=['GET'])
+@login_required
 def form_edit_get(team_id):
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM mlbteams.mlbteams2012 WHERE id=%s', team_id)
@@ -24,6 +26,7 @@ def form_edit_get(team_id):
 
 
 @app.route('/edit/<int:team_id>', methods=['POST'])
+@login_required
 def form_update_post(team_id):
     cursor = mysql.get_db().cursor()
     inputData = (request.form.get('Team'), request.form.get('Payroll_millions'), request.form.get('Wins'), team_id)
@@ -34,11 +37,13 @@ def form_update_post(team_id):
 
 
 @app.route('/team/new', methods=['GET'])
+@login_required
 def form_insert_get():
     return render_template('new.html', title='New Team Form')
 
 
 @app.route('/team/new', methods=['POST'])
+@login_required
 def form_insert_post():
     cursor = mysql.get_db().cursor()
     inputData = (request.form.get('Team'), request.form.get('Payroll_millions'), request.form.get('Wins'))
@@ -49,6 +54,7 @@ def form_insert_post():
 
 
 @app.route('/delete/<int:team_id>', methods=['POST'])
+@login_required
 def form_delete_post(team_id):
     cursor = mysql.get_db().cursor()
     sql_delete_query = """DELETE FROM mlbteams.mlbteams2012 WHERE id = %s """
@@ -115,3 +121,10 @@ def api_delete(team_id) -> str:
     mysql.get_db().commit()
     resp = Response(status=200, mimetype='finalproject/json')
     return resp
+
+@app.route("/logout")
+@login_required
+def logout():
+    """User log-out logic."""
+    logout_user()
+    return redirect(url_for('auth_bp.login'))
