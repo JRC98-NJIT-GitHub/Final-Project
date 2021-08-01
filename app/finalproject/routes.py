@@ -13,12 +13,6 @@ def index():
     return render_template('index.html', title='Home', user=user, teams=result)
 
 
-@app.route('/view/<int:team_id>', methods=['GET'])
-def record_view(team_id):
-    cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM mlbteams.mlbteams2012 WHERE id=%s', team_id)
-    result = cursor.fetchall()
-    return render_template('view.html', title='View Form', team=result[0])
 
 
 @app.route('/edit/<int:team_id>', methods=['GET'])

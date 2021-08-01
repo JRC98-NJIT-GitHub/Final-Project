@@ -2,6 +2,8 @@ from flask import Flask
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
 
+from . import view
+
 mysql = MySQL(cursorclass=DictCursor)
 
 def init_app():
@@ -16,9 +18,10 @@ def init_app():
     with app.app_context():
         # Include our Routes
         from . import routes
+        from .view import routes
 
         # Register Blueprints
-#        app.register_blueprint(auth.auth_bp)
-#        app.register_blueprint(admin.admin_bp)
+        from .view.routes import view_bp
+        app.register_blueprint(view_bp)
 
         return app
