@@ -9,4 +9,5 @@ RUN pip install  -r requirements.txt --upgrade pip
 
 COPY . /app
 
-CMD python app.py
+CMD python wsgi.py
+#CMD ["python", "-m", "finalproject"]

@@ -1,20 +1,8 @@
-from typing import List, Dict
+from flask import current_app as app
 import simplejson as json
-from flask import Flask, request, Response, redirect
+from flask import request, Response, redirect
 from flask import render_template
-from flaskext.mysql import MySQL
-from pymysql.cursors import DictCursor
-import logging
-logging.basicConfig(level=logging.DEBUG)
-
-app = Flask(__name__)
-mysql = MySQL(cursorclass=DictCursor)
-
-#app.config.from_pyfile('config.py')
-app.config.from_object('config.Config')
-
-mysql.init_app(app)
-
+from . import *
 
 @app.route('/', methods=['GET'])
 def index():
@@ -81,7 +69,7 @@ def api_browse() -> str:
     cursor.execute('SELECT * FROM mlbteams.mlbteams2012')
     result = cursor.fetchall()
     json_result = json.dumps(result);
-    resp = Response(json_result, status=200, mimetype='application/json')
+    resp = Response(json_result, status=200, mimetype='finalproject/json')
     return resp
 
 
@@ -91,7 +79,7 @@ def api_retrieve(team_id) -> str:
     cursor.execute('SELECT * FROM mlbteams.mlbteams2012 WHERE id=%s', team_id)
     result = cursor.fetchall()
     json_result = json.dumps(result);
-    resp = Response(json_result, status=200, mimetype='application/json')
+    resp = Response(json_result, status=200, mimetype='finalproject/json')
     return resp
 
 
@@ -105,7 +93,7 @@ def api_add() -> str:
     sql_insert_query = """INSERT INTO mlbteams.mlbteams2012 (Team,Payroll_millions,Wins) VALUES (%s, %s, %s) """
     cursor.execute(sql_insert_query, inputData)
     mysql.get_db().commit()
-    resp = Response(status=201, mimetype='application/json')
+    resp = Response(status=201, mimetype='finalproject/json')
     return resp
 
 
@@ -119,7 +107,7 @@ def api_edit(team_id):
     cursor.execute(sql_update_query, inputData)
     mysql.get_db().commit()
 
-    resp = Response(status=200, mimetype='application/json')
+    resp = Response(status=200, mimetype='finalproject/json')
     return resp
 
 
@@ -131,9 +119,5 @@ def api_delete(team_id) -> str:
     sql_delete_query = """DELETE FROM mlbteams.mlbteams2012 WHERE id = %s """
     cursor.execute(sql_delete_query, team_id)
     mysql.get_db().commit()
-    resp = Response(status=200, mimetype='application/json')
+    resp = Response(status=200, mimetype='finalproject/json')
     return resp
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
