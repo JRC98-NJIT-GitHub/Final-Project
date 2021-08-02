@@ -3,12 +3,14 @@ from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_session import Session
 
 from . import view
 
 db = SQLAlchemy()
 mysql = MySQL(cursorclass=DictCursor)
 login_manager = LoginManager()
+sess = Session()
 
 def init_app():
     """Initialize the core finalproject."""
@@ -19,6 +21,7 @@ def init_app():
     # Initialize Plugins
     mysql.init_app(app)
     db.init_app(app)
+    sess.init_app(app)
 
     with app.app_context():
         # Include our Routes

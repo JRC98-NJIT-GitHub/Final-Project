@@ -1,6 +1,6 @@
 from flask import current_app as app
 import simplejson as json
-from flask import request, Response, redirect, url_for
+from flask import request, Response, redirect, url_for, session
 from flask import render_template
 from flask_login import current_user, login_required, logout_user
 from . import *
@@ -9,7 +9,7 @@ app.login_manager = login_manager
 
 @app.route('/', methods=['GET'])
 def index():
-    user = {'username': 'MLB Team Wins for 2012'}
+    user = {'username': str(session.get('username'))}
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM mlbteams.mlbteams2012 order by team')
     result = cursor.fetchall()
@@ -127,4 +127,5 @@ def api_delete(team_id) -> str:
 def logout():
     """User log-out logic."""
     logout_user()
+    session['username'] = ''
     return redirect(url_for('auth_bp.login'))

@@ -14,6 +14,7 @@ class Config:
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-
 #    FLASK_APP = 'wsgi.py'
     SECRET_KEY = 'GDtfDCFYjD'
+
+    SESSION_TYPE = 'filesystem'

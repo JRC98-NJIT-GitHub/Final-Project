@@ -34,6 +34,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.check_password(password=form.password.data):
             login_user(user)
+            session['username'] = user.name
             next_page = request.args.get('next')
             return redirect(next_page or url_for('index'))
         flash('Invalid username/password combination')
