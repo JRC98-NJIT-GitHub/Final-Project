@@ -7,3 +7,7 @@ flask-wtf
 email_validator
 flask-session
 redis
+flask-assets
+lesscpy
+cssmin
+jsmin
