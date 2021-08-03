@@ -2,7 +2,7 @@
 <b>Updated 8/2/21</b>
 This final project was forked from Homework 5 to leverage steps for tasks 1 thru 3.  
 Steps 5 through 11 were created as cooresponding branches and documented in the Word 
- <a href="https://github.com/jrc98-njit/Final-Project 080221.docx">Final Project Word Doc</a>
+ <a href="JRC98 IS601 Final Project 080221.docx">Final Project Word Doc</a>
 
 # Project Description 
 <b>Updated 7/26/21</b>
